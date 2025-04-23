@@ -1,5 +1,11 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <dirent.h>
 
 // Faça um programa em C que implemente um interpretador de comandos com as seguintes funcionalidades:
 // Executar programas com seus respectivos argumentos digitados na linha de comando. Quando a linha de
@@ -16,8 +22,50 @@
 // (PID do processo pai). Mais informações a respeito do diretório /proc podem ser obtidas através do comando
 // "man proc". Para percorrer a estrutura de diretórios pode ser útil utilizar funções como opendir()/readdir()
 
+#define args_max 6 // 5 argumentos + o próprio comando
+#define linha_max 1024
+
+// estrutura que armazena informações básicas de um processo, como seu PID, PPID e nome
+
+typedef struct entrada
+{
+    pid_t Pid;
+    pid_t Ppid;
+    char nome[256];
+} InfoProcess;
+
+// função que executa os argumentos dados
+void executa(char *args[], int fundo)
+{
+    // crio um processo filho e duplico ele
+    pid_t pid = fork();
+
+    if (pid == 0)
+    {
+        // verificamos se foi passado algum comando para executar
+        if (args[0] == NULL)
+        {
+            puts("Nenhum comando especificado \n");
+            exit(EXIT_FAILURE);
+        }
+        // contamos a quantida de argumentos 
+        int cont_args = 0;
+        
+    }
+
+    if (pid > 0)
+    {
+        /* code */
+    }
+
+    if (pid < 0)
+    {
+        perror(fork);
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    
+
     return 0;
 }
