@@ -48,19 +48,47 @@ void executa(char *args[], int fundo)
             puts("Nenhum comando especificado \n");
             exit(EXIT_FAILURE);
         }
-        // contamos a quantida de argumentos 
-        int cont_args = 0;
-        
+        // contamos a quantida de argumentos
+        int n = 0;
+
+        while (n < args_max && args[n] != NULL)
+        {
+            n++;
+        }
+        // Garante terminação NULL
+        if (n == args_max)
+        {
+            // Se atingiu o máximo sem ver NULL, força o sentinel
+            args[args_max - 1] = NULL;
+        }
+        else
+        {
+            args[n] = NULL;
+        }
+
+        // Chama execvp, que busca no PATH e aceita vetor de argumentos
+        execvp(args[0], args);
+        // Se retornar, deu erro:
+        perror("execvp");
+        exit(EXIT_FAILURE);
     }
 
-    if (pid > 0)
+    else if (pid < 0)
     {
-        /* code */
+        perror("fork");
+        exit(EXIT_FAILURE);
     }
 
-    if (pid < 0)
+    else
     {
-        perror(fork);
+        if (!fundo)
+        {
+            waitpid(pid, NULL, 0);
+        }
+        else
+        {
+            printf("[1] %d\n", pid);
+        }
     }
 }
 
